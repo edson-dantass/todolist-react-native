@@ -38,11 +38,18 @@ export const styles = StyleSheet.create({
     paddingLeft: 2
   },
   list: {
-    marginTop: 28
+    marginTop: 28,
+    marginBottom: 22
   },
   listItem: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+  },
+  ceckContainer: {
+    flexDirection: "row",
+    alignItems:"center",
+    gap: 12,
+    flex: 1,
   },
   listItemText: {
     fontSize: 20,

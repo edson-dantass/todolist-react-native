@@ -9,10 +9,24 @@ import {
 } from "react-native";
 import { styles } from "./styles";
 import Icon from "@expo/vector-icons/Ionicons";
+import { ListItem } from "./ListItem";
 
 export function Home() {
   const [inputValue, setInputValue] = useState("");
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState([
+    { name: "eai" },
+    { name: "eai-2" },
+    { name: "eai-3" },
+    { name: "eai-4" },
+    { name: "eai-5" },
+    { name: "eai-6" },
+    { name: "eai-7" },
+    { name: "eai-8" },
+    { name: "eai-9" },
+    { name: "eai-10" },
+    { name: "eai-11" },
+    { name: "eai-12" },
+  ]);
 
   const handleAddTodo = () => {
     const existsTodo = !!todoList.find((todo) => todo.name === inputValue);
@@ -63,12 +77,7 @@ export function Home() {
         ItemSeparatorComponent={<View style={styles.separator} />}
         data={todoList}
         renderItem={({ item: { name } }) => (
-          <View style={styles.listItem}>
-            <Text style={styles.listItemText}>{name}</Text>
-            <TouchableOpacity onPress={() => handleRemoveTodo(name)}>
-              <Icon name="trash-outline" style={styles.listItemButtonRemove} />
-            </TouchableOpacity>
-          </View>
+          <ListItem name={name} onRemove={handleRemoveTodo} />
         )}
       />
     </View>
