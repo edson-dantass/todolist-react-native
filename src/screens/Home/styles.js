@@ -36,5 +36,25 @@ export const styles = StyleSheet.create({
     color:  "#FAFAFA",
     fontSize: 28,
     paddingLeft: 2
+  },
+  list: {
+    marginTop: 28
+  },
+  listItem: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  listItemText: {
+    fontSize: 20,
+    color: "#FAFAFA",
+  },
+  listItemButtonRemove: {
+    color: '#71717A',
+    fontSize: 24
+  },
+  separator: {
+    backgroundColor: "#3F3F46",
+    height: 1,
+    marginVertical: 8
   }
 });
