@@ -9,27 +9,16 @@ import {
 } from "react-native";
 import { styles } from "./styles";
 import Icon from "@expo/vector-icons/Ionicons";
-import { ListItem } from "./ListItem";
+import Checkbox from "expo-checkbox";
 
 export function Home() {
   const [inputValue, setInputValue] = useState("");
-  const [todoList, setTodoList] = useState([
-    { name: "eai" },
-    { name: "eai-2" },
-    { name: "eai-3" },
-    { name: "eai-4" },
-    { name: "eai-5" },
-    { name: "eai-6" },
-    { name: "eai-7" },
-    { name: "eai-8" },
-    { name: "eai-9" },
-    { name: "eai-10" },
-    { name: "eai-11" },
-    { name: "eai-12" },
-  ]);
+  const [todoList, setTodoList] = useState([]);
 
   const handleAddTodo = () => {
     const existsTodo = !!todoList.find((todo) => todo.name === inputValue);
+
+    if (!inputValue.trim()) return;
 
     if (existsTodo) {
       Alert.alert("Aviso", "Ooops! Essa tarefa já existe.");
@@ -55,9 +44,34 @@ export function Home() {
     ]);
   };
 
+  const handleCheckTodo = (name) => {
+    const currentTodoList = todoList.map((todo) => {
+      if (todo.name === name) {
+        todo.checked = !todo.checked;
+      }
+
+      return todo;
+    });
+
+    setTodoList(currentTodoList);
+  };
+
+  const countChecked = todoList.filter((todo) => todo.checked).length;
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Lista de Tarefas</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Lista de Tarefas</Text>
+        {countChecked > 0 && (
+          <View style={styles.checkCountContainer}>
+            <Text style={styles.checkCountText}>{countChecked}</Text>
+            <Icon
+              name="checkmark-circle-outline"
+              style={styles.checkCountIcon}
+            />
+          </View>
+        )}
+      </View>
 
       <View style={styles.inputContainer}>
         <TextInput
@@ -65,6 +79,8 @@ export function Home() {
           placeholder="Nome da tarefa"
           style={styles.input}
           value={inputValue}
+          enterKeyHint="done"
+          onSubmitEditing={() => handleAddTodo()}
           onChangeText={(text) => setInputValue(text)}
         />
         <TouchableOpacity style={styles.button} onPress={handleAddTodo}>
@@ -76,8 +92,42 @@ export function Home() {
         style={styles.list}
         ItemSeparatorComponent={<View style={styles.separator} />}
         data={todoList}
-        renderItem={({ item: { name } }) => (
-          <ListItem name={name} onRemove={handleRemoveTodo} />
+        contentContainerStyle={styles.listContentStyle}
+        ListEmptyComponent={
+          <View style={styles.emptyListContainer}>
+            <Icon name="trash-bin-outline" style={styles.emptyListIcon} />
+            <Text style={styles.emptyListTitle}>Lista Vazia</Text>
+            <Text style={styles.emptyListDescrption}>
+              Cadastre uma tarefa para começar
+            </Text>
+          </View>
+        }
+        renderItem={({ item: { name, checked } }) => (
+          <View style={styles.listItem}>
+            <TouchableOpacity
+              onPress={() => handleCheckTodo(name)}
+              style={styles.ceckContainer}
+            >
+              <Checkbox
+                value={checked}
+                onPress={() => handleCheckTodo(name)}
+                color={checked ? "#60A5FA" : undefined}
+              />
+              <Text
+                style={{
+                  ...styles.listItemText,
+                  textDecorationLine: checked ? "line-through" : "none",
+                  color: checked ? "#A1A1AA" : "#FAFAFA",
+                }}
+              >
+                {name}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => handleRemoveTodo(name)}>
+              <Icon name="trash-outline" style={styles.listItemButtonRemove} />
+            </TouchableOpacity>
+          </View>
         )}
       />
     </View>
